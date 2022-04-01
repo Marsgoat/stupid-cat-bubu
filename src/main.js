@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
-const { Menu, Tray } = require('electron');
 const path = require('path');
+const { createTray } = require('./icon');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -32,23 +32,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 });
-
-function createTray(win) {
-  const iconPath = path.join(__dirname, '../img/icon.jpg');
-  const tray = new Tray(iconPath);
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: '最小化',
-      click: () => win.hide(),
-    },
-    {
-      label: '結束',
-      click: () => app.quit(),
-    },
-  ]);
-  tray.setToolTip('stupid cat');
-  tray.setContextMenu(contextMenu);
-
-  tray.on('click', () => win.show());
-  return tray;
-}
